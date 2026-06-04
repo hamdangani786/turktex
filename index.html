@@ -44,17 +44,26 @@
     /* ── REVEAL ANIMATION ── */
     .reveal {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+      transform: translateY(38px);
+      filter: blur(3px);
+      transition: opacity 1.05s cubic-bezier(0.22,1,0.36,1),
+                  transform 1.05s cubic-bezier(0.22,1,0.36,1),
+                  filter 1.05s ease;
+      will-change: opacity, transform;
     }
     .reveal.in-view {
       opacity: 1;
       transform: translateY(0);
+      filter: blur(0);
     }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+    .reveal-delay-4 { transition-delay: 0.48s; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { transition: none; filter: none; transform: none; opacity: 1; }
+      .hero h1 em { animation: none; }
+    }
 
     /* ── HEADER ── */
     header {
@@ -105,34 +114,48 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 13px 26px;
+      padding: 14px 28px;
       border-radius: 4px;
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      transition: all 0.3s ease;
       border: none;
       letter-spacing: 0.02em;
       position: relative;
+      overflow: hidden;
+      background-image: linear-gradient(115deg,
+        transparent 32%,
+        rgba(255,255,255,0.22) 46%,
+        rgba(255,255,255,0.22) 50%,
+        transparent 64%);
+      background-repeat: no-repeat;
+      background-size: 250% 100%;
+      background-position: 160% 0;
+      transition: transform 0.3s ease,
+                  box-shadow 0.35s ease,
+                  background-color 0.3s ease,
+                  color 0.3s ease,
+                  background-position 0.8s cubic-bezier(0.16,1,0.3,1);
     }
-    .btn-primary { background: var(--charcoal); color: var(--white); }
+    .btn:hover { background-position: -60% 0; }
+    .btn-primary { background-color: var(--charcoal); color: var(--white); }
     .btn-primary:hover {
-      background: #000;
-      transform: translateY(-2px);
+      background-color: #000;
+      transform: translateY(-3px);
       box-shadow: var(--shadow-md), var(--glow-gold);
     }
-    .btn-gold { background: var(--gold); color: var(--charcoal); }
+    .btn-gold { background-color: var(--gold); color: var(--charcoal); }
     .btn-gold:hover {
-      background: var(--gold-light);
-      transform: translateY(-2px);
+      background-color: var(--gold-light);
+      transform: translateY(-3px);
       box-shadow: var(--shadow-md), var(--glow-gold);
     }
-    .btn-outline { background: transparent; color: var(--charcoal); border: 1.5px solid var(--charcoal); }
+    .btn-outline { background-color: transparent; color: var(--charcoal); border: 1.5px solid var(--charcoal); }
     .btn-outline:hover {
-      background: var(--charcoal);
+      background-color: var(--charcoal);
       color: var(--white);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
       box-shadow: var(--glow-gold);
     }
 
@@ -208,10 +231,10 @@
     .hero-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 100px 32px;
+      padding: 130px 32px;
       display: grid;
       grid-template-columns: 1.1fr 1fr;
-      gap: 96px;
+      gap: 110px;
       align-items: center;
       position: relative;
       z-index: 1;
@@ -239,25 +262,39 @@
 
     .hero h1 {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2.6rem, 4.8vw, 4.2rem);
+      font-size: clamp(3rem, 5.6vw, 5rem);
       font-weight: 700;
-      line-height: 1.08;
+      line-height: 1.06;
       color: var(--charcoal);
-      margin-bottom: 28px;
-      letter-spacing: -0.015em;
+      margin-bottom: 34px;
+      letter-spacing: -0.02em;
     }
     .hero h1 em {
       font-style: italic;
-      color: var(--gold);
       font-weight: 500;
+      color: var(--gold);
+      background: linear-gradient(100deg,
+        var(--gold) 25%,
+        var(--gold-light) 42%,
+        #fff4d6 50%,
+        var(--gold-light) 58%,
+        var(--gold) 75%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: heroShimmer 5s linear infinite;
+    }
+    @keyframes heroShimmer {
+      to { background-position: -220% center; }
     }
 
     .hero p {
-      font-size: 1.1rem;
+      font-size: 1.14rem;
       color: var(--muted);
-      line-height: 1.8;
-      max-width: 540px;
-      margin-bottom: 44px;
+      line-height: 1.85;
+      max-width: 560px;
+      margin-bottom: 52px;
     }
 
     .hero-actions {
@@ -523,6 +560,103 @@
       font-size: 0.92rem;
       color: rgba(255,255,255,0.65);
       line-height: 1.75;
+    }
+
+    /* ── OUR FABRICS / PRODUCTS ── */
+    .products {
+      background: var(--charcoal);
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+    .products::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 72% 18%, rgba(212,168,58,0.07) 0%, transparent 45%),
+        radial-gradient(circle at 18% 82%, rgba(212,168,58,0.05) 0%, transparent 45%),
+        repeating-linear-gradient(
+          45deg,
+          rgba(255,255,255,0.02) 0px,
+          rgba(255,255,255,0.02) 1px,
+          transparent 1px,
+          transparent 18px
+        );
+      pointer-events: none;
+    }
+    .products .container { position: relative; z-index: 1; }
+    .products .section-title { color: var(--white); }
+    .products .section-sub { color: rgba(255,255,255,0.7); }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+    }
+    .product-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), border-color 0.45s ease, box-shadow 0.45s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(212,168,58,0.4);
+      box-shadow: var(--glow-gold);
+    }
+    .product-img {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+    .product-img canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .product-card:hover .product-img canvas { transform: scale(1.07); }
+    .product-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(18,18,18,0.55) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .product-body { padding: 24px 26px 28px; }
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.28rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 9px;
+    }
+    .product-desc {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.65;
+    }
+    .products-note {
+      text-align: center;
+      margin-top: 56px;
+    }
+    .products-note span {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.02rem;
+      font-weight: 500;
+      color: var(--gold-light);
+      letter-spacing: 0.02em;
+    }
+    .products-note span::before,
+    .products-note span::after {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: rgba(212,168,58,0.5);
     }
 
     /* ── CTA STRIP ── */
@@ -881,6 +1015,7 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
       .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
       .contact-form { padding: 36px; }
       section { padding: 100px 0; }
@@ -902,6 +1037,7 @@
       .about-inner { grid-template-columns: 1fr; gap: 80px; }
       .about-points { grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr; }
+      .products-grid { grid-template-columns: 1fr; }
       .cta-inner { grid-template-columns: 1fr; text-align: center; }
       .cta-actions { justify-content: center; }
       .contact-inner { grid-template-columns: 1fr; gap: 56px; }
@@ -950,7 +1086,7 @@
     <div class="hero-content reveal">
       <div class="hero-eyebrow">Premium Upholstery Supplies</div>
       <h1>Fabric & finishing,<br/>crafted for the <em>trade</em></h1>
-      <p>South Africa's specialist supplier of premium upholstery fabric imported from Turkey. Serving upholsterers, furniture manufacturers, and wholesale buyers across Gauteng.</p>
+      <p>South Africa's specialist supplier of premium upholstery fabric, imported directly from Turkey.</p>
       <div class="hero-actions">
         <a href="#contact" class="btn btn-primary">Get in Touch</a>
         <a href="#about" class="btn btn-outline">About Turktex</a>
@@ -992,8 +1128,8 @@
           <h2 class="section-title">A trusted partner for <em>South Africa's</em> upholstery trade</h2>
         </div>
         <ul class="about-points">
-          <li><div class="point-check">✓</div>Upholsterers, manufacturers &amp; wholesale buyers</li>
-          <li><div class="point-check">✓</div>Premium imported fabric from Turkey</li>
+          <li><div class="point-check">✓</div>Trade &amp; wholesale buyers welcome</li>
+          <li><div class="point-check">✓</div>Premium Turkish imports</li>
           <li><div class="point-check">✓</div>Gauteng distribution</li>
           <li><div class="point-check">✓</div>Expert product advice</li>
         </ul>
@@ -1017,21 +1153,21 @@
           <svg viewBox="0 0 24 24"><path d="M20 6h-3V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM9 4h6v2H9V4z"/></svg>
         </div>
         <div class="service-title">Trade Supply</div>
-        <div class="service-desc">Wholesale and trade pricing for upholsterers, furniture manufacturers, and resellers. No minimum order — any amount welcome.</div>
+        <div class="service-desc">Trade and wholesale pricing for upholsterers, furniture manufacturers, and resellers. No minimum order.</div>
       </div>
       <div class="service-card reveal reveal-delay-2">
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 16H6V5h12v14zM7.5 7.5h9v2h-9zm0 4h9v2h-9zm0 4h6v2h-6z"/></svg>
         </div>
         <div class="service-title">Material Sourcing</div>
-        <div class="service-desc">Premium upholstery fabric imported directly from Turkey — wide range of materials always in stock.</div>
+        <div class="service-desc">Premium upholstery fabrics imported directly from Turkey — wide range always in stock.</div>
       </div>
       <div class="service-card reveal reveal-delay-3">
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm12 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm-1-5.5V9.5h2.5L21.46 13H17z"/></svg>
         </div>
         <div class="service-title">Gauteng Delivery</div>
-        <div class="service-desc">Delivery within Gauteng available. Collection from our premises in Centurion also welcome.</div>
+        <div class="service-desc">Delivery within Gauteng. Collection from our Centurion premises also available.</div>
       </div>
       <div class="service-card reveal reveal-delay-4">
         <div class="service-icon">
@@ -1041,6 +1177,50 @@
         <div class="service-desc">Years of trade experience on hand — we'll help you find the right fabric at the right price, every time.</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- OUR FABRICS -->
+<section class="products" id="products">
+  <div class="container">
+    <div class="section-header center reveal">
+      <div class="section-label" style="color:var(--gold-light);">Our Range</div>
+      <h2 class="section-title">Our <em>Fabrics</em></h2>
+      <p class="section-sub">A curated selection of premium upholstery materials, imported directly from Turkey.</p>
+    </div>
+
+    <div class="products-grid">
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-img"><canvas id="prodVelvet" width="320" height="240"></canvas></div>
+        <div class="product-body">
+          <div class="product-name">Velvet</div>
+          <div class="product-desc">Plush, deep-pile velvet with a soft, luxurious finish.</div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-img"><canvas id="prodVinyl" width="320" height="240"></canvas></div>
+        <div class="product-body">
+          <div class="product-name">Vinyl</div>
+          <div class="product-desc">Hard-wearing, easy-clean vinyl built for everyday use.</div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-3">
+        <div class="product-img"><canvas id="prodLinen" width="320" height="240"></canvas></div>
+        <div class="product-body">
+          <div class="product-name">Linen</div>
+          <div class="product-desc">Natural-look woven linen — soft to the touch, yet durable.</div>
+        </div>
+      </div>
+      <div class="product-card reveal reveal-delay-4">
+        <div class="product-img"><canvas id="prodLeather" width="320" height="240"></canvas></div>
+        <div class="product-body">
+          <div class="product-name">Leather</div>
+          <div class="product-desc">Timeless leather upholstery with a rich, premium feel.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="products-note reveal"><span>Visit us in store to see our full range</span></div>
   </div>
 </section>
 
@@ -1318,12 +1498,72 @@
           ctx.stroke();
         }
       }
+
+    } else if (type === 'vinyl') {
+      const g = ctx.createLinearGradient(0,0,w,h);
+      g.addColorStop(0, shade(color, 14));
+      g.addColorStop(0.5, color);
+      g.addColorStop(1, shade(color, -14));
+      ctx.fillStyle = g;
+      ctx.fillRect(0,0,w,h);
+      for (let i=0; i<w*h/45; i++) {
+        ctx.beginPath();
+        ctx.arc(Math.random()*w, Math.random()*h, 0.6, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(0,0,0,${Math.random()*0.06})`;
+        ctx.fill();
+      }
+      const sheen = ctx.createLinearGradient(0,0,w,h*0.5);
+      sheen.addColorStop(0, 'rgba(255,255,255,0.06)');
+      sheen.addColorStop(0.5, 'rgba(212,168,58,0.05)');
+      sheen.addColorStop(1, 'transparent');
+      ctx.fillStyle = sheen;
+      ctx.fillRect(0,0,w,h);
+
+    } else if (type === 'linen') {
+      ctx.fillStyle = color;
+      ctx.fillRect(0,0,w,h);
+      for (let y=0; y<h; y+=3) { ctx.fillStyle = 'rgba(255,255,255,0.03)'; ctx.fillRect(0,y,w,1); }
+      for (let x=0; x<w; x+=3) { ctx.fillStyle = 'rgba(0,0,0,0.05)'; ctx.fillRect(x,0,1,h); }
+      const sheen = ctx.createLinearGradient(0,0,w*0.7,h*0.4);
+      sheen.addColorStop(0, 'rgba(212,168,58,0.08)');
+      sheen.addColorStop(1, 'transparent');
+      ctx.fillStyle = sheen;
+      ctx.fillRect(0,0,w,h);
+
+    } else if (type === 'leather') {
+      ctx.fillStyle = color;
+      ctx.fillRect(0,0,w,h);
+      for (let i=0; i<1500; i++) {
+        const x = Math.random()*w, y = Math.random()*h, r = 0.4+Math.random()*1.2;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(0,0,0,${0.05+Math.random()*0.06})`;
+        ctx.fill();
+      }
+      for (let i=0; i<10; i++) {
+        const x1 = Math.random()*w, y1 = Math.random()*h;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(x1+40*(Math.random()-0.5), y1+24*(Math.random()-0.5), x1+80*(Math.random()-0.5), y1+50*(Math.random()-0.5));
+        ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+      const hl = ctx.createRadialGradient(w*0.35, h*0.3, 0, w*0.5, h*0.45, w*0.65);
+      hl.addColorStop(0, 'rgba(212,168,58,0.10)');
+      hl.addColorStop(1, 'transparent');
+      ctx.fillStyle = hl;
+      ctx.fillRect(0,0,w,h);
     }
   }
 
   window.addEventListener('DOMContentLoaded', () => {
     drawFabric(document.getElementById('heroCanvas'), { type: 'velvet', color: '#2b2b2b' });
     drawFabric(document.getElementById('aboutCanvas'), { type: 'damask', color: '#1f1f1f' });
+    drawFabric(document.getElementById('prodVelvet'),  { type: 'velvet',  color: '#262626' });
+    drawFabric(document.getElementById('prodVinyl'),   { type: 'vinyl',   color: '#222222' });
+    drawFabric(document.getElementById('prodLinen'),   { type: 'linen',   color: '#2a2a27' });
+    drawFabric(document.getElementById('prodLeather'), { type: 'leather', color: '#242220' });
     onScroll();
   });
 </script>
