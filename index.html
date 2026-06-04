@@ -231,13 +231,13 @@
     .hero-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 130px 32px;
+      padding: 150px 32px;
       display: grid;
       grid-template-columns: 1.1fr 1fr;
-      gap: 110px;
+      gap: 120px;
       align-items: center;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     .hero-content { will-change: transform; }
@@ -262,12 +262,12 @@
 
     .hero h1 {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 5.6vw, 5rem);
+      font-size: clamp(3.2rem, 6.2vw, 5.8rem);
       font-weight: 700;
-      line-height: 1.06;
+      line-height: 1.02;
       color: var(--charcoal);
-      margin-bottom: 34px;
-      letter-spacing: -0.02em;
+      margin-bottom: 38px;
+      letter-spacing: -0.025em;
     }
     .hero h1 em {
       font-style: italic;
@@ -847,7 +847,7 @@
     footer {
       background: var(--charcoal);
       color: rgba(255,255,255,0.7);
-      padding: 88px 0 0;
+      padding: 100px 0 0;
       position: relative;
       overflow: hidden;
     }
@@ -871,8 +871,8 @@
     .footer-grid {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr;
-      gap: 64px;
-      margin-bottom: 56px;
+      gap: 80px;
+      margin-bottom: 64px;
     }
 
     .footer-logo img { height: 72px; width: auto; margin-bottom: 24px; filter: brightness(0) invert(1); }
@@ -1050,6 +1050,221 @@
       .section-header { margin-bottom: 56px; }
       .floating-call { width: 54px; height: 54px; bottom: 20px; right: 20px; }
       .back-to-top { bottom: 86px; right: 20px; width: 44px; height: 44px; }
+      .gallery { column-count: 1; }
+    }
+
+    /* ════════ LUXE ENHANCEMENTS ════════ */
+
+    /* Frosted-glass navbar on scroll */
+    header.scrolled {
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(20px) saturate(170%);
+      -webkit-backdrop-filter: blur(20px) saturate(170%);
+      box-shadow: 0 6px 34px rgba(0,0,0,0.10);
+      border-bottom-color: rgba(212,168,58,0.18);
+    }
+
+    /* Animated underline on nav links */
+    nav a:not(.btn) { position: relative; padding-bottom: 5px; }
+    nav a:not(.btn)::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(to right, var(--gold), var(--gold-light));
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+    }
+    nav a:not(.btn):hover::after { transform: scaleX(1); }
+
+    /* "Get a Quote" subtle pulse */
+    @keyframes ctaPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212,168,58,0); }
+      50%      { box-shadow: 0 0 0 8px rgba(212,168,58,0.16); }
+    }
+    .cta-pulse { animation: ctaPulse 2.6s ease-in-out infinite; }
+    .cta-pulse:hover { animation-play-state: paused; }
+
+    /* Soft 3D depth shadow on section headings (hover) */
+    .section-title {
+      transition: text-shadow 0.45s ease, transform 0.45s ease;
+    }
+    .section-header:hover .section-title {
+      transform: translateY(-2px);
+      text-shadow: 1px 1px 0 rgba(212,168,58,0.18),
+                   2px 2px 0 rgba(212,168,58,0.12),
+                   5px 6px 16px rgba(0,0,0,0.18);
+    }
+    .services .section-header:hover .section-title,
+    .products .section-header:hover .section-title {
+      text-shadow: 1px 1px 0 rgba(212,168,58,0.4),
+                   2px 2px 0 rgba(212,168,58,0.22),
+                   5px 7px 20px rgba(0,0,0,0.55);
+    }
+
+    /* Staggered reveal for About bullet points */
+    .about-points li {
+      opacity: 0;
+      transform: translateX(-16px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .about-content.in-view .about-points li { opacity: 1; transform: none; }
+    .about-content.in-view .about-points li:nth-child(1) { transition-delay: 0.30s; }
+    .about-content.in-view .about-points li:nth-child(2) { transition-delay: 0.42s; }
+    .about-content.in-view .about-points li:nth-child(3) { transition-delay: 0.54s; }
+    .about-content.in-view .about-points li:nth-child(4) { transition-delay: 0.66s; }
+
+    /* Service cards — 3D lift */
+    .services-grid { perspective: 1200px; }
+    .service-card {
+      transform-style: preserve-3d;
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1),
+                  background 0.35s ease, border-color 0.35s ease, box-shadow 0.45s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-10px) rotateX(7deg) scale(1.02);
+      box-shadow: 0 28px 54px rgba(0,0,0,0.42), var(--glow-gold);
+    }
+
+    /* Hero background parallax layer + gold particles */
+    .hero::before, .hero::after { display: none; }
+    .hero-bg {
+      position: absolute;
+      inset: -12% 0 0 0;
+      z-index: 0;
+      pointer-events: none;
+      will-change: transform;
+    }
+    .hero-bg .glow { position: absolute; border-radius: 50%; }
+    .hero-bg .glow-1 {
+      top: -120px; right: -120px;
+      width: 740px; height: 740px;
+      background: radial-gradient(circle, rgba(212,168,58,0.16) 0%, transparent 70%);
+    }
+    .hero-bg .glow-2 {
+      bottom: -160px; left: -160px;
+      width: 640px; height: 640px;
+      background: radial-gradient(circle, rgba(43,43,43,0.06) 0%, transparent 70%);
+    }
+    #heroParticles { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+    /* ── PREMIUM FABRIC GALLERY (masonry) ── */
+    .gallery { column-count: 3; column-gap: 22px; }
+    .gallery-item {
+      position: relative;
+      break-inside: avoid;
+      margin: 0 0 22px;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.07);
+      background: linear-gradient(135deg, #2f2f2f, #1b1b1b);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), box-shadow 0.45s ease;
+    }
+    .gallery-item:hover { box-shadow: 0 24px 54px rgba(0,0,0,0.5), var(--glow-gold); }
+    .gallery-media {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(212,168,58,0.10), transparent 62%),
+        linear-gradient(135deg, #323232 0%, #1d1d1d 100%);
+    }
+    .gallery-item:nth-child(4n+1) .gallery-media { aspect-ratio: 3/4; }
+    .gallery-item:nth-child(4n+2) .gallery-media { aspect-ratio: 1/1; }
+    .gallery-item:nth-child(4n+3) .gallery-media { aspect-ratio: 4/5; }
+    .gallery-item:nth-child(4n+4) .gallery-media { aspect-ratio: 4/3; }
+    .gallery-media img {
+      position: relative;
+      z-index: 1;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 6.5s ease, opacity 0.5s ease;  /* Ken Burns */
+    }
+    .gallery-item:hover .gallery-media img { transform: scale(1.14); }
+    .gallery-media img.img-missing { opacity: 0; }
+    .gallery-ph {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .gallery-ph svg { width: 42px; height: 42px; fill: rgba(212,168,58,0.6); }
+    .gallery-ph span {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.32);
+    }
+    .gallery-caption {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      z-index: 2;
+      padding: 42px 20px 18px;
+      background: linear-gradient(to top, rgba(12,12,12,0.88) 0%, transparent 100%);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.06rem;
+      font-weight: 600;
+      color: #fff;
+      opacity: 0.92;
+      transform: translateY(6px);
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
+
+    /* Premium footer dividers + spacing */
+    footer::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--gold) 18%, var(--gold) 82%, transparent);
+      opacity: 0.55;
+      z-index: 2;
+    }
+    .footer-col h4 { position: relative; padding-bottom: 14px; }
+    .footer-col h4::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 34px; height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+    .footer-bottom {
+      border-top: none;
+      margin-top: 56px;
+      position: relative;
+    }
+    .footer-bottom::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(212,168,58,0.45), transparent);
+    }
+
+    @media (max-width: 1024px) {
+      .gallery { column-count: 2; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cta-pulse { animation: none; }
+      .gallery-item:hover .gallery-media img { transform: none; }
+      #heroParticles { display: none; }
+      .hero-bg { transform: none !important; }
     }
   </style>
 </head>
@@ -1065,7 +1280,7 @@
       <a href="#about">About</a>
       <a href="#services">What We Do</a>
       <a href="#contact">Contact</a>
-      <a href="#contact" class="btn btn-primary">Get a Quote</a>
+      <a href="#contact" class="btn btn-primary cta-pulse">Get a Quote</a>
     </nav>
     <div class="hamburger" id="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
@@ -1077,11 +1292,16 @@
   <a href="#about" onclick="toggleMenu()">About</a>
   <a href="#services" onclick="toggleMenu()">What We Do</a>
   <a href="#contact" onclick="toggleMenu()">Contact</a>
-  <a href="#contact" class="btn btn-primary" onclick="toggleMenu()" style="margin-top:8px; justify-content:center;">Get a Quote</a>
+  <a href="#contact" class="btn btn-primary cta-pulse" onclick="toggleMenu()" style="margin-top:8px; justify-content:center;">Get a Quote</a>
 </div>
 
 <!-- HERO -->
 <section class="hero" id="home">
+  <div class="hero-bg" id="heroBg">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <canvas id="heroParticles"></canvas>
+  </div>
   <div class="hero-inner">
     <div class="hero-content reveal">
       <div class="hero-eyebrow">Premium Upholstery Supplies</div>
@@ -1186,41 +1406,74 @@
     <div class="section-header center reveal">
       <div class="section-label" style="color:var(--gold-light);">Our Range</div>
       <h2 class="section-title">Our <em>Fabrics</em></h2>
-      <p class="section-sub">A curated selection of premium upholstery materials, imported directly from Turkey.</p>
+      <p class="section-sub">A glimpse of what we stock — visit us in Centurion to see the full range</p>
     </div>
 
-    <div class="products-grid">
-      <div class="product-card reveal reveal-delay-1">
-        <div class="product-img"><canvas id="prodVelvet" width="320" height="240"></canvas></div>
-        <div class="product-body">
-          <div class="product-name">Velvet</div>
-          <div class="product-desc">Plush, deep-pile velvet with a soft, luxurious finish.</div>
+    <div class="gallery">
+      <figure class="gallery-item tilt reveal reveal-delay-1">
+        <div class="gallery-media">
+          <div class="gallery-ph"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm0 7.2L4.8 6 12 3.3 19.2 6 12 9.2zM2 12l10 5 10-5-1.8-.9L12 14.8 3.8 11.1 2 12zm0 5 10 5 10-5-1.8-.9L12 19.8 3.8 16.1 2 17z"/></svg><span>Photo coming soon</span></div>
+          <img src="fabrics/navy-armchair.jpg" alt="Navy blue tufted armchair with yellow cushion" loading="lazy" onerror="this.classList.add('img-missing')" />
         </div>
-      </div>
-      <div class="product-card reveal reveal-delay-2">
-        <div class="product-img"><canvas id="prodVinyl" width="320" height="240"></canvas></div>
-        <div class="product-body">
-          <div class="product-name">Vinyl</div>
-          <div class="product-desc">Hard-wearing, easy-clean vinyl built for everyday use.</div>
-        </div>
-      </div>
-      <div class="product-card reveal reveal-delay-3">
-        <div class="product-img"><canvas id="prodLinen" width="320" height="240"></canvas></div>
-        <div class="product-body">
-          <div class="product-name">Linen</div>
-          <div class="product-desc">Natural-look woven linen — soft to the touch, yet durable.</div>
-        </div>
-      </div>
-      <div class="product-card reveal reveal-delay-4">
-        <div class="product-img"><canvas id="prodLeather" width="320" height="240"></canvas></div>
-        <div class="product-body">
-          <div class="product-name">Leather</div>
-          <div class="product-desc">Timeless leather upholstery with a rich, premium feel.</div>
-        </div>
-      </div>
-    </div>
+        <figcaption class="gallery-caption">Navy Tufted Armchair</figcaption>
+      </figure>
 
-    <div class="products-note reveal"><span>Visit us in store to see our full range</span></div>
+      <figure class="gallery-item tilt reveal reveal-delay-2">
+        <div class="gallery-media">
+          <div class="gallery-ph"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm0 7.2L4.8 6 12 3.3 19.2 6 12 9.2zM2 12l10 5 10-5-1.8-.9L12 14.8 3.8 11.1 2 12zm0 5 10 5 10-5-1.8-.9L12 19.8 3.8 16.1 2 17z"/></svg><span>Photo coming soon</span></div>
+          <img src="fabrics/teal-wingback.jpg" alt="Teal wingback chair with floral fabric" loading="lazy" onerror="this.classList.add('img-missing')" />
+        </div>
+        <figcaption class="gallery-caption">Teal Wingback Chair</figcaption>
+      </figure>
+
+      <figure class="gallery-item tilt reveal reveal-delay-3">
+        <div class="gallery-media">
+          <div class="gallery-ph"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm0 7.2L4.8 6 12 3.3 19.2 6 12 9.2zM2 12l10 5 10-5-1.8-.9L12 14.8 3.8 11.1 2 12zm0 5 10 5 10-5-1.8-.9L12 19.8 3.8 16.1 2 17z"/></svg><span>Photo coming soon</span></div>
+          <img src="fabrics/floral-roll.jpg" alt="Pink and white floral fabric roll" loading="lazy" onerror="this.classList.add('img-missing')" />
+        </div>
+        <figcaption class="gallery-caption">Floral Fabric Roll</figcaption>
+      </figure>
+
+      <figure class="gallery-item tilt reveal reveal-delay-4">
+        <div class="gallery-media">
+          <div class="gallery-ph"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm0 7.2L4.8 6 12 3.3 19.2 6 12 9.2zM2 12l10 5 10-5-1.8-.9L12 14.8 3.8 11.1 2 12zm0 5 10 5 10-5-1.8-.9L12 19.8 3.8 16.1 2 17z"/></svg><span>Photo coming soon</span></div>
+          <img src="fabrics/tropical-protea.jpg" alt="Tropical bird and protea print fabric" loading="lazy" onerror="this.classList.add('img-missing')" />
+        </div>
+        <figcaption class="gallery-caption">Tropical Bird &amp; Protea Print</figcaption>
+      </figure>
+
+      <figure class="gallery-item tilt reveal reveal-delay-1">
+        <div class="gallery-media">
+          <div class="gallery-ph"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm0 7.2L4.8 6 12 3.3 19.2 6 12 9.2zM2 12l10 5 10-5-1.8-.9L12 14.8 3.8 11.1 2 12zm0 5 10 5 10-5-1.8-.9L12 19.8 3.8 16.1 2 17z"/></svg><span>Photo coming soon</span></div>
+          <img src="fabrics/gold-shimmer.jpg" alt="Gold glitter shimmer fabric" loading="lazy" onerror="this.classList.add('img-missing')" />
+        </div>
+        <figcaption class="gallery-caption">Gold Shimmer Fabric</figcaption>
+      </figure>
+
+      <figure class="gallery-item tilt reveal reveal-delay-2">
+        <div class="gallery-media">
+          <div class="gallery-ph"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm0 7.2L4.8 6 12 3.3 19.2 6 12 9.2zM2 12l10 5 10-5-1.8-.9L12 14.8 3.8 11.1 2 12zm0 5 10 5 10-5-1.8-.9L12 19.8 3.8 16.1 2 17z"/></svg><span>Photo coming soon</span></div>
+          <img src="fabrics/greek-key-chair.jpg" alt="Greek key pattern upholstered chair" loading="lazy" onerror="this.classList.add('img-missing')" />
+        </div>
+        <figcaption class="gallery-caption">Greek Key Chair</figcaption>
+      </figure>
+
+      <figure class="gallery-item tilt reveal reveal-delay-3">
+        <div class="gallery-media">
+          <div class="gallery-ph"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm0 7.2L4.8 6 12 3.3 19.2 6 12 9.2zM2 12l10 5 10-5-1.8-.9L12 14.8 3.8 11.1 2 12zm0 5 10 5 10-5-1.8-.9L12 19.8 3.8 16.1 2 17z"/></svg><span>Photo coming soon</span></div>
+          <img src="fabrics/palm-leaf.jpg" alt="Tropical palm leaf print fabric" loading="lazy" onerror="this.classList.add('img-missing')" />
+        </div>
+        <figcaption class="gallery-caption">Palm Leaf Print</figcaption>
+      </figure>
+
+      <figure class="gallery-item tilt reveal reveal-delay-4">
+        <div class="gallery-media">
+          <div class="gallery-ph"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm0 7.2L4.8 6 12 3.3 19.2 6 12 9.2zM2 12l10 5 10-5-1.8-.9L12 14.8 3.8 11.1 2 12zm0 5 10 5 10-5-1.8-.9L12 19.8 3.8 16.1 2 17z"/></svg><span>Photo coming soon</span></div>
+          <img src="fabrics/stacked-rolls.jpg" alt="Colourful stacked fabric rolls" loading="lazy" onerror="this.classList.add('img-missing')" />
+        </div>
+        <figcaption class="gallery-caption">Stacked Fabric Rolls</figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -1396,20 +1649,16 @@
   /* Header scroll shadow */
   const header = document.getElementById('site-header');
   const backToTop = document.getElementById('backToTop');
-  const hero = document.querySelector('.hero');
+  const heroBg = document.getElementById('heroBg');
 
   function onScroll() {
     const y = window.scrollY;
     header.classList.toggle('scrolled', y > 20);
     backToTop.classList.toggle('visible', y > 600);
 
-    /* Hero parallax */
-    if (hero && y < window.innerHeight) {
-      const heroContent = document.querySelector('.hero-content');
-      const heroVisual = document.querySelector('.hero-visual');
-      if (heroContent) heroContent.style.transform = `translateY(${y * 0.12}px)`;
-      if (heroVisual)  heroVisual.style.transform  = `translateY(${y * 0.25}px)`;
-      hero.style.setProperty('--py', y + 'px');
+    /* Smooth parallax on the hero background layer */
+    if (heroBg && y < window.innerHeight * 1.3) {
+      heroBg.style.transform = `translate3d(0, ${(y * 0.4).toFixed(1)}px, 0)`;
     }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -1445,6 +1694,70 @@
   }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 
   document.querySelectorAll('.reveal, .section-header').forEach(el => io.observe(el));
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Floating gold particle shimmer in the hero background */
+  function initParticles() {
+    const c = document.getElementById('heroParticles');
+    if (!c || reduceMotion) return;
+    const ctx = c.getContext('2d');
+    let w = 0, h = 0, dots = [];
+    function resize() {
+      const host = c.parentElement.getBoundingClientRect();
+      w = c.width = Math.max(1, Math.floor(host.width));
+      h = c.height = Math.max(1, Math.floor(host.height));
+      const count = Math.min(80, Math.floor((w * h) / 14000));
+      dots = [];
+      for (let i = 0; i < count; i++) {
+        dots.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.8 + 0.4,
+          vy: -(Math.random() * 0.25 + 0.05),
+          vx: (Math.random() - 0.5) * 0.12,
+          base: Math.random() * 0.4 + 0.2,
+          tw: Math.random() * Math.PI * 2
+        });
+      }
+    }
+    function frame() {
+      ctx.clearRect(0, 0, w, h);
+      for (const d of dots) {
+        d.y += d.vy; d.x += d.vx; d.tw += 0.02;
+        if (d.y < -6) { d.y = h + 6; d.x = Math.random() * w; }
+        if (d.x < -6) d.x = w + 6; else if (d.x > w + 6) d.x = -6;
+        const a = d.base * (0.55 + 0.45 * Math.sin(d.tw));
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(212,168,58,' + a.toFixed(3) + ')';
+        ctx.shadowColor = 'rgba(227,192,98,0.7)';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    requestAnimationFrame(frame);
+  }
+
+  /* Subtle 3D tilt on fabric cards */
+  function initTilt() {
+    if (reduceMotion) return;
+    document.querySelectorAll('.tilt').forEach(card => {
+      const S = 9;
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform =
+          'perspective(820px) rotateY(' + (px * S).toFixed(2) + 'deg) rotateX(' +
+          (-py * S).toFixed(2) + 'deg) translateY(-6px)';
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+  }
 
   /* Fabric canvas */
   function drawFabric(canvas, opts) {
@@ -1560,11 +1873,9 @@
   window.addEventListener('DOMContentLoaded', () => {
     drawFabric(document.getElementById('heroCanvas'), { type: 'velvet', color: '#2b2b2b' });
     drawFabric(document.getElementById('aboutCanvas'), { type: 'damask', color: '#1f1f1f' });
-    drawFabric(document.getElementById('prodVelvet'),  { type: 'velvet',  color: '#262626' });
-    drawFabric(document.getElementById('prodVinyl'),   { type: 'vinyl',   color: '#222222' });
-    drawFabric(document.getElementById('prodLinen'),   { type: 'linen',   color: '#2a2a27' });
-    drawFabric(document.getElementById('prodLeather'), { type: 'leather', color: '#242220' });
     onScroll();
+    initParticles();
+    initTilt();
   });
 </script>
 </body>
